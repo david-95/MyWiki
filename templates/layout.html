@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>Flaskr_My Knowledge Recorder</title>
+<head>
+
+<script type="text/javascript">
+function edit(topicID){
+	console.log("topicID="+topicID);
+	if(topicID!=""){
+		document.getElementById('topicID').value=topicID;
+		document.getElementById('topic').value=document.getElementById("tpic_"+topicID).innerText;
+		nicEditors.findEditor('content').setContent(document.getElementById("ctn_"+topicID).innerHTML);
+	}
+}
+function validInputSubmit(){
+	var txtCont= nicEditors.findEditor('content').getContent();
+	if((document.getElementById("topic").value !="") && ( txtCont !="")){
+		document.getElementById("content").value= txtCont;
+		document.getElementById("fastpostform").submit();
+	}else{
+		alert("Fields cannot be null, ->topicID ,->content");
+	}
+}
+</script>
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+<script src="/static/js/nicEdit.js" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+      new nicEditor({iconsPath : '/static/image/nicEditorIcons.gif'}).panelInstance('content');
+});
+//]]>
+</script>
+		
+</head>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<div class="page">
+  <h1>Flaskr</h1>
+  <div class="metanav">
+  {% if not session.logged_in %}
+    <a href="{{ url_for('login') }}">log in</a>
+  {% else %}
+    <a href="{{ url_for('logout') }}">log out</a>
+  {% endif %}
+  </div>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block body %}{% endblock %}
+</div>
+</html>

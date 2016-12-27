@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <form id="fastpostform" action="{{ url_for('add_entry') }}" method="post" class="add-entry">
+      <dl>
+        <dt>Topic:
+        <dd><input id="topic" type="text" size="80" name="topic"/>  topicID:<input id="topicID" type="text" size=3 name="topicID"/>
+        <dt>Text:
+          <textarea id="content" name="content" rows=40 style="width: 100%;">
+      	   </textarea>
+        <dd><input type="button" onclick="validInputSubmit()" value="Share">
+      </dl>
+    </form>
+  {% endif %}
+  <ul class="entries">
+  {% for entry in entries %}
+    <div id="contentblock" class="itemblock">
+    	<li>
+    		<h2>
+    			<div id='tpic_{{ entry.topicID }}'>
+    				{{ entry.topic }}
+    			</div>
+    		</h2>
+    		<span> 
+    			{{ entry.topicID }} 
+    		</span>
+    		<div id='ctn_{{ entry.topicID }}'>
+    			{{ entry.content|safe }}
+    		</div>
+    	</li>
+    </div>
+    <div id="btnblock" >
+    	<input type="button" name="edit" value="edit" onclick=edit({{ entry.topicID }}) />
+    </div>
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em></li>
+  {% endfor %}
+  </ul>
+
+{% endblock %}
+
+
+
