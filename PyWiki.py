@@ -55,18 +55,19 @@ def add_entry():
     tpIDTxt=request.form['topicID'].strip()
     topicTxt=request.form['topic'].strip()
     contentTxt=request.form['content'].strip()
-    if tpIDTxt=="unicode:":
-        if not(topicTxt == "unicode:" or contentTxt == "unicode:"):  # blank value
+    if cmp(tpIDTxt,"")==0:
+        if not(cmp(topicTxt, "")==0 or cmp(contentTxt,"")==0):  # blank value
             db.execute('insert into knowledge (topicID,topic,content) values (null,?, ?)',
                        [request.form['topic'], request.form['content']])
             db.commit()
     else:
-        if not(topicTxt == "unicode:" or contentTxt == "unicode:"):  # blank value
+        if not(cmp(topicTxt, "")==0 or cmp(contentTxt,"")==0):  # blank value
             db.execute('update knowledge set topic=?,content=?  where topicID=? ',
                        [request.form['topic'], request.form['content'],request.form['topicID']])
             db.commit()
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
